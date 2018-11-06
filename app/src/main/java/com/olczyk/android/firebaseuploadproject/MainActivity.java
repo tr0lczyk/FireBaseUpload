@@ -87,9 +87,14 @@ public class MainActivity extends AppCompatActivity {
         textViewShowUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openImagesActivity();
             }
         });
+    }
+
+    private void openImagesActivity() {
+        Intent intent = new Intent(MainActivity.this, ImagesActivity.class);
+        startActivity(intent);
     }
 
     private String getFileExtension(Uri uri) {
