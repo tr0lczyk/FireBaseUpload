@@ -3,12 +3,15 @@ package com.olczyk.android.firebaseuploadproject;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -56,7 +59,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageVievHol
         public void bind(Upload upload){
             this.upload = upload;
             textViewName.setText(upload.getName());
-            Picasso.get().load(upload.getImageUrl()).fit().centerCrop().into(imageView);
+            Picasso.get().load(upload.getImageUrl())
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(context, "yeah!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.i("LOG", "Problem is: " + e.getMessage());
+                        }
+                    });
         }
     }
 }

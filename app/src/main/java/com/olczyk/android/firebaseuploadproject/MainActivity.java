@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -17,8 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     private StorageTask mUploadTask;
 
-
     @AfterViews
     public void aVoid() {
 
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openImagesActivity() {
-        Intent intent = new Intent(MainActivity.this, ImagesActivity.class);
+        Intent intent = new Intent(MainActivity.this, ImagesActivity_.class);
         startActivity(intent);
     }
 
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void uploadFile() {
         if (imageViewUri != null) {
-            StorageReference fileReference = storageReference.child(System.currentTimeMillis()
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageViewUri));
 
             mUploadTask = fileReference.putFile(imageViewUri)
@@ -122,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
 
                             Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                             Upload upload = new Upload(editTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getStorage().getDownloadUrl().toString());
+                                    taskSnapshot.getUploadSessionUri().toString());
+                            Log.i("LOG", "the url is: " + taskSnapshot.getUploadSessionUri().toString());
                             String uploadId = databaseReference.push().getKey();
+//                            fileReference.getStorage().get
                             databaseReference.child(uploadId).setValue(upload);
                         }
                     })
