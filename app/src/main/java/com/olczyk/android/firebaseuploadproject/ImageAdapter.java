@@ -60,6 +60,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageVievHol
             this.upload = upload;
             textViewName.setText(upload.getName());
             Picasso.get().load(upload.getImageUrl())
+                    .fit().centerCrop()
                     .into(imageView, new Callback() {
                         @Override
                         public void onSuccess() {
