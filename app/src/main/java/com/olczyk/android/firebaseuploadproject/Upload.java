@@ -1,9 +1,12 @@
 package com.olczyk.android.firebaseuploadproject;
 
+import com.google.firebase.database.Exclude;
+
 public class Upload {
 
     private String name;
     private String imageUrl;
+    private String key;
 
     public Upload(){
 
@@ -32,5 +35,16 @@ public class Upload {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+
+    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    @Exclude
+    public void setKey(String key) {
+        this.key = key;
     }
 }
